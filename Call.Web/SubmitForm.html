@@ -1,0 +1,129 @@
+﻿<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<style>
+    .round-button {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .required {
+        color: red;
+    }
+</style>
+<button class="round-button" onclick="showPanel()">Жду звонка</button>
+
+<div id="panel" style="display: none">
+    <div onclick="hidePanel()">&#10006;</div>
+    <form onsubmit="return sendRequest()">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Заполните форму обратной связи</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><label for="phone">номер телефона</label></td>
+                    <td><input type="tel" required="required" id="phone" name="Phone" /></td>
+                    <td><span class="required">*</span></td>
+                </tr>
+                <tr>
+                    <td><label for="name">имя</label></td>
+                    <td><input type="text" required="required" id="name" name="Name" /></td>
+                    <td><span class="required">*</span></td>
+                </tr>
+                <tr>
+                    <td><label for="email">имейл</label></td>
+                    <td><input type="email" id="email" name="Email" /></td>
+                </tr>
+                <tr>
+                    <td><label for="question">вопрос</label></td>
+                    <td><textarea id="question" name="Question" maxlength="1024"></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <input type="hidden" name="Provider" value="provider" />
+                        <input type="submit" value="Заказать звонок" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <a>Не удобно разговаривать сейчас</a>
+    <div style="display: none">
+        Выбрать время звонка
+        <table>
+            <tr>
+                <td>
+                    День
+                </td>
+                <td>
+                    <select>
+                        <option>Дата</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Час
+                </td>
+                <td>
+                    <select>
+                        <option>24</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Минута
+                </td>
+                <td>
+                    <select>
+                        <option>60</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    function sendRequest() {
+        var tenantId = location.href.substr(location.href.indexOf('tenantId') + 9);
+        var data = {
+            TenantId: tenantId,
+            Phone: $('#phone').val(),
+            Name: $('#name').val(),
+            Email: $('#email').val(),
+            Question: $('#question').val()
+        };
+
+        $.post('api/SubmitForm', data)
+            .done(function (response) {
+                if (response === true) {
+                    alert(response);
+                } else {
+                    failAlert(response);
+                }
+                hidePanel();
+            }).fail(function (jqXHR, textStatus, error) {
+                failAlert(jqXHR.responseJSON.message);
+            });
+
+        return false;
+    }
+
+    function failAlert(msg) {
+        alert(msg);
+    }
+
+    function showPanel() {
+        $('.round-button').hide();
+        $('#panel').show();
+    }
+
+    function hidePanel() {
+        $('.round-button').show();
+        $('#panel').hide();
+    }
+</script>

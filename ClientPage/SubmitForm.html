@@ -1,0 +1,60 @@
+﻿<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<style>
+    .round-button {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+    .required {
+        color: red;
+    }
+</style>
+<button class="round-button" onclick="showPanel()">Жду звонка</button>
+
+<div id="panel" style="display: none">
+    <div onclick="hidePanel()">&#10006;</div>
+    <form id="panelForm" method="post" action="http://widget.net/api/SubmitForm">
+        <input type="hidden" name="ProviderId" value="1"/>
+        <table>
+            <thead>
+            <tr>
+                <th colspan="2">Заполните форму обратной связи</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><label for="phone">номер телефона</label></td>
+                <td><input type="tel" required="required" name="Phone"/></td>
+                <td><span class="required">*</span></td>
+            </tr>
+            <tr>
+                <td><label for="name">имя</label></td>
+                <td><input type="text" required="required" name="Name"/></td>
+                <td><span class="required">*</span></td>
+            </tr>
+            <tr>
+                <td><label for="email">имейл</label></td>
+                <td><input type="email" name="Email"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <input type="hidden" name="Provider" value="provider"/>
+                    <input type="submit" value="Заказать звонок"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<script>
+    function showPanel() {
+        $('.round-button').hide();
+        $('#panel').show();
+    }
+
+    function hidePanel() {
+        $('.round-button').show();
+        $('#panel').hide();
+    }
+</script>

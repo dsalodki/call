@@ -1,0 +1,39 @@
+﻿<div id="vm" ng-controller="app.views.home as vm">
+    <h1>@L("WellcomeMessage")</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="requestTable">
+                <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                    <th>Treated In</th>
+                    <th>Answered In</th>
+                    <th>Question</th>
+                </tr>
+                </thead>
+                <tr ng-repeat="r in requests" data-id="{{r.id}}">
+                    <td>{{r.state == 0 ? "Новый запрос" : "Взято в обработку"}}</td>
+                    <td>{{r.name}}</td>
+                    <td>{{r.phone}}</td>
+                    <td>{{r.email}}</td>
+                    <td>{{r.created}}</td>
+                    <td>{{r.treatedTime}}</td>
+                    <td>{{r.answeredTime}}</td>
+                    <td>{{r.question}}</td>
+                    @if (Context.User.Identity.Name != "admin")
+                    {
+                        <td>
+                            <input type="button" value="mark as Treated" ng-style="r.state === 1 && { 'display': 'none' }" ng-click="mark($event, r.id, 1)"/>
+                            <input type="button" ng-style="r.state === 0 && { 'display': 'none' }" value="mark as Answered" ng-click="mark($event, r.id, 2)"/>
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
